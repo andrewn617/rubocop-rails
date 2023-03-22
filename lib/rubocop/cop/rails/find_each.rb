@@ -39,6 +39,7 @@ module RuboCop
           return unless SCOPE_METHODS.include?(node.receiver.method_name)
           return if node.receiver.receiver.nil? && !inherit_active_record_base?(node)
           return if ignored?(node)
+          return if node.parent.block_type? && node.parent.parent&.send_type?
 
           range = node.loc.selector
           add_offense(range) do |corrector|

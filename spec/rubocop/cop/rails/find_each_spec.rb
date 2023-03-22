@@ -82,6 +82,12 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     RUBY
   end
 
+  it "does not register an offense when used in a method chain" do
+    expect_no_offenses(<<~RUBY)
+      class C; User.all.each { |u| u.x }.any?(&:y?); end
+    RUBY
+  end
+
   context 'with no receiver' do
     it 'does not register an offense when not inheriting any class' do
       expect_no_offenses(<<~RUBY)
